@@ -184,6 +184,8 @@ class SocialMediaPoster:
 
         content = self.create_post_content(metadata, 'instagram')
 
+        cleanup_blob_name = destination_blob_name
+
         try:
             data = {
                 'image_url': processed_image_url,
@@ -226,6 +228,7 @@ class SocialMediaPoster:
                     logger.info("Posted to Instagram successfully")
                     # Delete the image from GCS after successful post
                     self._delete_image_from_gcs(destination_blob_name)
+                    cleanup_blob_name = None
                     return True
                 elif status_code == 'ERROR':
                     logger.error(f"Instagram post failed after publishing. Status: {status_data.get('status')}")
@@ -241,6 +244,9 @@ class SocialMediaPoster:
         except Exception as e:
             logger.error(f"An unexpected error occurred during Instagram posting: {str(e)}")
             return False
+        finally:
+            if cleanup_blob_name:
+                self._delete_image_from_gcs(cleanup_blob_name)
 
     def post_to_twitter(self, metadata: Dict[str, str]) -> bool:
         """Post to Twitter/X using OAuth2"""

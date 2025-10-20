@@ -51,7 +51,7 @@ class TwitterClient:
             }
 
             response = requests.post(
-                'https://api.x.com/2/oauth2/token',
+                'https://api.twitter.com/2/oauth2/token',
                 data=token_data,
                 headers=headers
             )
@@ -101,7 +101,7 @@ class TwitterClient:
             }
 
             response = requests.post(
-                'https://api.x.com/2/tweets',
+                'https://api.twitter.com/2/tweets',
                 headers=headers,
                 data=json.dumps(tweet_data)
             )

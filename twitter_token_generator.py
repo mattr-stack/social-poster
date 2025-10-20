@@ -31,7 +31,7 @@ def create_authorization_url(code_challenge):
         "code_challenge": code_challenge,
         "code_challenge_method": "S256",
     }
-    url = "https://x.com/i/oauth2/authorize"
+    url = "https://twitter.com/i/oauth2/authorize"
     auth_url = requests.Request("GET", url, params=params).prepare().url
     return auth_url
 
@@ -40,7 +40,7 @@ def create_authorization_url(code_challenge):
 
 # --- 4. Exchange the authorization code for an access token ---
 def exchange_code_for_token(code, code_verifier):
-    token_url = "https://api.x.com/2/oauth2/token"
+    token_url = "https://api.twitter.com/2/oauth2/token"
     payload = {
         "code": code,
         "grant_type": "authorization_code",

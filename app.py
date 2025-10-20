@@ -20,16 +20,18 @@ project_id = os.getenv("GCP_PROJECT")
 def get_secret(secret_id):
     """Get a secret from Google Secret Manager"""
     if not project_id:
-        logger.error("GCP_PROJECT environment variable not set.")
-        return None
+        message = "GCP_PROJECT environment variable not set."
+        logger.error(message)
+        raise RuntimeError(message)
     try:
         client = secretmanager.SecretManagerServiceClient()
         name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
         response = client.access_secret_version(name=name)
         return response.payload.data.decode('UTF-8')
     except Exception as e:
-        logger.error(f"Failed to get secret {secret_id}: {str(e)}")
-        return None
+        message = f"Failed to get secret {secret_id}: {str(e)}"
+        logger.error(message)
+        raise RuntimeError(message) from e
 
 class SocialMediaAutomation:
     """Main automation class"""

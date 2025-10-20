@@ -89,10 +89,12 @@ class MetadataExtractor:
 
     def _resolve_url(self, url: str, base_url: str) -> str:
         """Resolve relative URLs"""
+        if not url:
+            return ''
+
         if url.startswith('http'):
             return url
-        elif url.startswith('//'):
+        if url.startswith('//'):
             return 'https:' + url
-        elif url.startswith('/'):
-            return urljoin(base_url, url)
-        return url
+
+        return urljoin(base_url, url)
